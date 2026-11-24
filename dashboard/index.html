@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar v3 — pre-token protocols, priced from the market itself</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header>
+  <h1>Token Radar <span class="v3">v3</span></h1>
+  <p class="sub">Which protocol without a token is worth farming — and what its token could be worth. Every multiple below is calibrated from this snapshot's own priced protocols, not guessed.</p>
+  <p class="meta" id="meta">Loading snapshot…</p>
+</header>
+
+<section id="how" aria-label="How it works">
+  <h2>How the price is built</h2>
+  <p><strong>implied value = TVL × category multiple × momentum × maturity × risk.</strong>
+  The multiple is the <em>median market-cap / TVL ratio</em> of the protocols in this snapshot that already have a token, in the same category.
+  A category with fewer than 3 priced peers uses the global median instead, and the table says so.
+  The low/high range comes from the same peers' 25th and 75th percentiles.
+  Momentum is the 7-day TVL change, maturity is the age since listing, risk is the chain spread.</p>
+  <p class="warn">This is a model, not a promise: a high implied value means the market pays that much for comparable TVL elsewhere — it does not mean a token will launch, or at that price.</p>
+  <p>Below the floor, the board only carries protocols that could plausibly launch a token of their own. Wrapped, staked and bridged products of a token that already trades, versioned copies and centralised exchanges are left out — WBTC is Bitcoin on Ethereum, not a protocol waiting on a launch — using the same rule the snapshot's own watchlist uses.</p>
+</section>
+
+<section id="calibration" aria-label="Calibration table">
+  <h2>Calibration — priced peers per category</h2>
+  <table id="calTable">
+    <thead><tr><th>Category</th><th>Priced peers</th><th>Median mcap/TVL</th><th>25th pct</th><th>75th pct</th><th>Source</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section id="controls" aria-label="Board controls">
+  <h2>The board — pre-token protocols by implied value</h2>
+  <div class="controls">
+    <label>Search <input id="q" type="search" placeholder="protocol name or slug" autocomplete="off"></label>
+    <label>Category <select id="cat"><option value="">All categories</option></select></label>
+    <label><input id="watchOnly" type="checkbox"> Watchlist only (40)</label>
+    <label><input id="withRange" type="checkbox"> Show value range</label>
+  </div>
+  <div class="scenario">
+    <label for="growth">Sandbox — what if TVL grows by <output id="growthOut">+0%</output> before launch?</label>
+    <input id="growth" type="range" min="-50" max="100" step="5" value="0">
+    <span class="hint">Drag to rescale every implied value on the board and in the detail view. The board order does not change: the same factor applies to all rows.</span>
+  </div>
+  <p class="count" id="count"></p>
+  <table id="board">
+    <thead><tr>
+      <th data-sort="rank">Rank</th><th data-sort="name">Protocol</th><th data-sort="category">Category</th>
+      <th data-sort="tvl_usd">TVL</th><th data-sort="change_7d">7d</th><th data-sort="multiple">Multiple</th>
+      <th data-sort="implied_value_usd">Implied value</th><th class="rangeCol" data-sort="low_usd">Low – High</th><th>Watchlist</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section id="detail" aria-label="Protocol detail" hidden>
+  <h2 id="detailTitle">Protocol detail</h2>
+  <div id="detailBody"></div>
+</section>
+
+<footer>
+  <p>Token Radar v3. Data: the sealed snapshot as of <span id="asof"></span>. Model: empirical median mcap/TVL per category, fallback to the global median when a category has fewer than 3 priced peers. 198 rows: the full 40-protocol watchlist plus the 158 pre-token protocols below the floor that could plausibly launch a token of their own.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
